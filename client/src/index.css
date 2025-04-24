@@ -1,0 +1,139 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 240 10% 3.9%;
+  --foreground: 0 0% 98%;
+  --muted: 240 3.7% 15.9%;
+  --muted-foreground: 240 5% 64.9%;
+  --popover: 240 10% 3.9%;
+  --popover-foreground: 0 0% 98%;
+  --card: 240 10% 3.9%;
+  --card-foreground: 0 0% 98%;
+  --border: 240 3.7% 15.9%;
+  --input: 240 3.7% 15.9%;
+  --primary: 207 90% 54%;
+  --primary-foreground: 0 0% 98%;
+  --secondary: 240 3.7% 15.9%;
+  --secondary-foreground: 0 0% 98%;
+  --accent: 240 3.7% 15.9%;
+  --accent-foreground: 0 0% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+  --ring: 240 4.9% 83.9%;
+  --radius: 0.5rem;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply font-sans antialiased bg-dark text-light;
+  }
+  
+  .orbitron {
+    font-family: 'Orbitron', sans-serif;
+  }
+}
+
+@layer utilities {
+  .bg-dark {
+    background-color: #1E1E1E;
+  }
+  
+  .bg-navy {
+    background-color: #00274D;
+  }
+  
+  .bg-purple {
+    background-color: #4B0082;
+  }
+  
+  .bg-darkred {
+    background-color: #8B0000;
+  }
+  
+  .bg-forest {
+    background-color: #006400;
+  }
+  
+  .bg-orange {
+    background-color: #FF8C00;
+  }
+  
+  .text-light {
+    color: #FAFAFA;
+  }
+  
+  .text-orange {
+    color: #FF8C00;
+  }
+  
+  .text-purple {
+    color: #4B0082;
+  }
+  
+  .border-navy {
+    border-color: #00274D;
+  }
+  
+  .album-card {
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  }
+  
+  .album-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+  }
+  
+  .nav-link {
+    position: relative;
+  }
+  
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -2px;
+    left: 0;
+    background-color: #FF8C00;
+    transition: width 0.3s ease;
+  }
+  
+  .nav-link:hover::after {
+    width: 100%;
+  }
+  
+  .active-nav::after {
+    width: 100%;
+  }
+  
+  .album-hover:hover .album-overlay {
+    opacity: 1;
+  }
+  
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: #1E1E1E;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #4B0082;
+    border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: #FF8C00;
+  }
+  
+  .bg-gradient-radial {
+    background-image: radial-gradient(var(--tw-gradient-stops));
+  }
+}
