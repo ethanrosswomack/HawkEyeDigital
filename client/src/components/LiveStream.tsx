@@ -133,9 +133,10 @@ const LiveStream: React.FC = () => {
       </div>
       
       <div className="flex flex-col md:flex-row">
-        {/* Video stream placeholder */}
+        {/* Video stream section */}
         <div className="w-full md:w-3/4 bg-navy/80 p-2">
           <div className="relative" style={{ paddingBottom: '56.25%' }}>
+            {/* Stream placeholder - will be replaced by actual stream when live */}
             <div className="absolute inset-0 flex items-center justify-center bg-navy/90">
               <div className="text-center">
                 <div className="w-16 h-16 mx-auto bg-orange/20 rounded-full flex items-center justify-center mb-4">
@@ -145,6 +146,42 @@ const LiveStream: React.FC = () => {
                 <p className="text-light/60 text-sm mt-2">
                   When Hawk Eye goes live, the video will appear here
                 </p>
+                
+                {/* Stream controls */}
+                <div className="mt-6 flex justify-center space-x-4">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="border-orange/50 text-orange hover:bg-orange/10"
+                  >
+                    <i className="fas fa-bell mr-2"></i> Notify Me
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="border-light/50 text-light hover:bg-light/10"
+                  >
+                    <i className="fas fa-calendar-alt mr-2"></i> Upcoming Streams
+                  </Button>
+                </div>
+              </div>
+            </div>
+
+            {/* Stream information */}
+            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-navy to-transparent p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-orange font-bold text-lg">HAWK EYE LIVE</h3>
+                  <p className="text-light/80 text-sm">
+                    Next stream: Special Announcement
+                  </p>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <div className={`w-3 h-3 rounded-full ${isConnected ? 'bg-green-500 animate-pulse' : 'bg-red-500'}`}></div>
+                  <span className="text-xs text-light/70">
+                    {viewerCount} watching
+                  </span>
+                </div>
               </div>
             </div>
           </div>

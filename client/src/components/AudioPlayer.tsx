@@ -60,14 +60,31 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({
           </div>
         </div>
         
-        <H5AudioPlayer
-          src={currentTrack.audioUrl || ''}
-          showJumpControls
-          showSkipControls
-          onClickNext={handleClickNext}
-          onClickPrevious={handleClickPrevious}
-          onEnded={handleEnded}
-          autoPlayAfterSrcChange
+        <div className="rhap_container p-2">
+          <audio
+            controls
+            src={currentTrack.audioUrl || ''}
+            onEnded={handleEnded}
+            className="w-full mb-2"
+          />
+          <div className="flex justify-between items-center mt-2">
+            <button 
+              onClick={handleClickPrevious}
+              className="px-3 py-1 bg-navy hover:bg-navy/80 text-orange rounded-md transition-colors"
+            >
+              Previous
+            </button>
+            <div className="text-light/70 text-sm">
+              {currentTrack.trackNumber} of {tracks.length}
+            </div>
+            <button 
+              onClick={handleClickNext}
+              className="px-3 py-1 bg-navy hover:bg-navy/80 text-orange rounded-md transition-colors"
+            >
+              Next
+            </button>
+          </div>
+        </div>
         
         {currentTrack.lyrics && (
           <div className="mt-4">

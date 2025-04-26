@@ -15,14 +15,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
     path: '/ws'
   });
   
+  // Track connected clients and viewer count
+  let connectedClients = new Set();
+  
   // WebSocket event handlers
   wss.on('connection', (ws) => {
     console.log('Client connected to WebSocket');
     
+    // Add to connected clients
+    connectedClients.add(ws);
+    
+    // Update viewer count for all clients
+    const viewerCount = connectedClients.size;
+    broadcastViewerCount(wss, viewerCount);
+    
     // Send a welcome message
     ws.send(JSON.stringify({
       type: 'info',
-      message: 'Welcome to Hawk Eye Live Stream'
+      message: 'Welcome to Hawk Eye Live Stream',
+      timestamp: new Date().toISOString()
     }));
     
     // Handle incoming messages
@@ -31,12 +42,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const data = JSON.parse(message.toString());
         console.log('Received:', data);
         
-        // Echo the message back to all clients
+        // Broadcast the message to all clients
         wss.clients.forEach((client) => {
-          if (client.readyState === ws.OPEN) {
+          if (client.readyState === WebSocket.OPEN) {
             client.send(JSON.stringify({
-              type: 'message',
-              sender: 'user',
+              type: data.type || 'message',
+              sender: data.sender || 'Anonymous',
               content: data.content,
               timestamp: new Date().toISOString()
             }));
@@ -50,8 +61,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
     // Handle disconnection
     ws.on('close', () => {
       console.log('Client disconnected from WebSocket');
+      
+      // Remove from connected clients
+      connectedClients.delete(ws);
+      
+      // Update viewer count for all clients
+      const viewerCount = connectedClients.size;
+      broadcastViewerCount(wss, viewerCount);
     });
   });
+  
+  // Function to broadcast viewer count to all clients
+  function broadcastViewerCount(wss: WebSocketServer, count: number) {
+    wss.clients.forEach((client) => {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(JSON.stringify({
+          type: 'viewers',
+          count: count,
+          timestamp: new Date().toISOString()
+        }));
+      }
+    });
+  }
 
   // Import CSV data endpoint
   app.post("/api/import-csv", async (req, res) => {
