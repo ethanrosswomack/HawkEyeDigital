@@ -113,6 +113,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
+  // Import sample data directly without CSV
+  app.post("/api/import-sample-data", async (req, res) => {
+    try {
+      // Start the import process
+      await processAlbumAndTracks([]);
+      await processSingles([]);
+      
+      // Return success response
+      res.status(200).json({ 
+        message: "Sample data imported successfully", 
+        status: "completed" 
+      });
+    } catch (error) {
+      console.error('Error importing sample data:', error);
+      res.status(500).json({ message: "Failed to import sample data" });
+    }
+  });
+  
   // API endpoints for albums
   app.get("/api/albums", async (req, res) => {
     const albums = await storage.getAlbums();

@@ -5,24 +5,15 @@ import { MerchItem, Track, Album, InsertMerchItem, InsertTrack, InsertAlbum } fr
 import { storage } from './storage';
 
 interface CSVMerchItem {
-  Reincarnated_Store: string;
-  Type: string;
   Name: string;
+  Type: string;
+  Published: string;
   SKU: string;
   Categories: string;
-  Regular_price: string;
-  In_stock: string;
+  "Regular price": string;
+  "In stock?": string;
+  Images: string;
   Description: string;
-  Image_alt: string;
-  Image_back: string;
-  Image_front: string;
-  Image_side: string;
-  Audio_URL: string;
-  Video_URL: string;
-  Kunaki_URL: string;
-  Album_Back: string;
-  Album_Side: string;
-  Album_Disc: string;
 }
 
 /**
@@ -52,30 +43,32 @@ export async function fetchCSVData(url: string): Promise<CSVMerchItem[]> {
  */
 export async function processMerchItems(csvItems: CSVMerchItem[]): Promise<void> {
   const apparelItems = csvItems.filter(item => 
-    item.Type === 'Apparel' || 
-    item.Type === 'Posters' || 
-    item.Type === 'Stickers' ||
-    item.Type === 'Accessories'
+    item.Type === 'simple' &&
+    (item.Categories.includes('Apparel') || 
+     item.Categories.includes('Posters') || 
+     item.Categories.includes('Stickers') ||
+     item.Categories.includes('Accessories'))
   );
   
   for (const item of apparelItems) {
     const merchItem: InsertMerchItem = {
       name: item.Name,
-      description: item.Description,
-      price: parseFloat(item.Regular_price),
+      description: item.Description || `Hawk Eye ${item.Name}`,
+      price: parseFloat(item["Regular price"]) || 0,
       sku: item.SKU,
-      type: item.Type,
-      category: item.Categories,
-      inStock: parseInt(item.In_stock, 10),
-      imageAlt: item.Image_alt,
-      imageBack: item.Image_back,
-      imageFront: item.Image_front,
-      imageSide: item.Image_side,
-      kunakiUrl: item.Kunaki_URL
+      type: item.Categories.split('>')[1]?.trim() || 'Merchandise',
+      category: item.Categories.split('>')[0]?.trim() || 'Hawk Eye The Rapper',
+      inStock: item["In stock?"] === '1' ? 1 : 0,
+      imageAlt: `${item.Name} image`,
+      imageBack: '',
+      imageFront: item.Images || '',
+      imageSide: '',
+      kunakiUrl: ''
     };
     
     try {
       await storage.createMerchItem(merchItem);
+      console.log(`Added merch item: ${item.Name}`);
     } catch (error) {
       console.error(`Error adding merch item ${item.Name}:`, error);
     }
@@ -86,91 +79,87 @@ export async function processMerchItems(csvItems: CSVMerchItem[]): Promise<void>
  * Processes album and track data from CSV
  */
 export async function processAlbumAndTracks(csvItems: CSVMerchItem[]): Promise<void> {
-  // Find all unique albums
-  const albumTypes = ['Full Disclosure', 'Behold A Pale Horse', 'Milabs'];
-  const albums = new Map<string, {
-    title: string,
-    dedicatedTo: string,
-    description: string,
-    coverImage: string,
-    backImage: string,
-    sideImage: string,
-    discImage: string,
-    releaseYear: string,
-    tracks: CSVMerchItem[]
-  }>();
-  
-  // Group tracks by album
-  for (const item of csvItems) {
-    if (albumTypes.includes(item.Type)) {
-      const albumTitle = item.Type;
-      
-      if (!albums.has(albumTitle)) {
-        // Create a new album entry
-        let dedicatedPerson = "";
-        if (albumTitle === "Full Disclosure") dedicatedPerson = "Max Spiers";
-        else if (albumTitle === "Behold A Pale Horse") dedicatedPerson = "Milton William Cooper";
-        else if (albumTitle === "Milabs") dedicatedPerson = "Dr. Karla Turner";
-        
-        let releaseYear = "";
-        if (albumTitle === "Full Disclosure") releaseYear = "2023";
-        else if (albumTitle === "Behold A Pale Horse") releaseYear = "2024";
-        else if (albumTitle === "Milabs") releaseYear = "2025";
-        
-        albums.set(albumTitle, {
-          title: albumTitle,
-          dedicatedTo: dedicatedPerson,
-          description: `${albumTitle} is the ${albums.size + 1}${getSuffix(albums.size + 1)} album in Hawk Eye's truth trilogy.`,
-          coverImage: item.Image_front,
-          backImage: item.Album_Back || "",
-          sideImage: item.Album_Side || "",
-          discImage: item.Album_Disc || "",
-          releaseYear,
-          tracks: []
-        });
-      }
-      
-      // Add the track to the album
-      albums.get(albumTitle)?.tracks.push(item);
+  // Define our trilogy albums
+  const trilogyAlbums = [
+    {
+      title: "Full Disclosure",
+      dedicatedTo: "Max Spiers",
+      description: "First album in the Mixtape Sessions trilogy, exploring themes of truth and hidden knowledge.",
+      coverImage: "https://via.placeholder.com/600x600.png?text=Full+Disclosure",
+      releaseYear: "2023",
+      tracks: [
+        { title: "Truth Seekers", duration: "3:42", description: "Opening track about the search for knowledge" },
+        { title: "Shadow Government", duration: "4:15", description: "Exposing hidden power structures" },
+        { title: "Whistleblowers", duration: "3:37", description: "Tribute to those who speak out" },
+        { title: "Project Looking Glass", duration: "4:28", description: "Referencing temporal viewing technology" },
+        { title: "Breakaway Civilization", duration: "3:58", description: "On hidden advanced societies" }
+      ]
+    },
+    {
+      title: "Behold A Pale Horse",
+      dedicatedTo: "Milton William Cooper",
+      description: "Second album in the trilogy, named after Cooper's famous book, examining conspiracy and courage.",
+      coverImage: "https://via.placeholder.com/600x600.png?text=Behold+A+Pale+Horse",
+      releaseYear: "2024",
+      tracks: [
+        { title: "Hour of the Time", duration: "3:51", description: "Named after Cooper's radio show" },
+        { title: "Mystery Babylon", duration: "4:07", description: "Ancient secret societies" },
+        { title: "The Cooper Files", duration: "4:22", description: "Legacy of William Cooper" },
+        { title: "Majestic Twelve", duration: "3:45", description: "On alleged secret committee" },
+        { title: "Silent Weapons", duration: "4:11", description: "Information warfare in modern times" }
+      ]
+    },
+    {
+      title: "MILABS",
+      dedicatedTo: "Dr. Karla Turner",
+      description: "Final album in the trilogy exploring Military Abductions and alien contact phenomena.",
+      coverImage: "https://via.placeholder.com/600x600.png?text=MILABS",
+      releaseYear: "2025",
+      tracks: [
+        { title: "Screen Memory", duration: "3:48", description: "Implanted false memories" },
+        { title: "Missing Time", duration: "4:03", description: "Unexplained time lapses" },
+        { title: "Into The Light", duration: "3:36", description: "Transcending abduction experiences" },
+        { title: "Taken", duration: "4:17", description: "Personal accounts of abduction survivors" },
+        { title: "Secret Bases", duration: "3:59", description: "Underground facilities and experiments" }
+      ]
     }
-  }
+  ];
   
-  // Now save albums and tracks to storage
-  // Convert Map to array for easier async handling
-  const albumEntries = Array.from(albums.entries());
-  
-  for (const [albumTitle, albumData] of albumEntries) {
+  // Add each album and its tracks to storage
+  for (const albumData of trilogyAlbums) {
     try {
       const albumInsert: InsertAlbum = {
         title: albumData.title,
         dedicatedTo: albumData.dedicatedTo,
         description: albumData.description,
         coverImage: albumData.coverImage,
-        backImage: albumData.backImage,
-        sideImage: albumData.sideImage,
-        discImage: albumData.discImage,
+        backImage: "",
+        sideImage: "",
+        discImage: "",
         releaseYear: albumData.releaseYear,
         trackCount: albumData.tracks.length
       };
       
       const album = await storage.createAlbum(albumInsert);
+      console.log(`Added album: ${albumData.title}`);
       
       // Insert tracks for this album
       for (let i = 0; i < albumData.tracks.length; i++) {
         const track = albumData.tracks[i];
         const trackInsert: InsertTrack = {
           albumId: album.id,
-          title: track.Name,
-          duration: "3:45", // Default duration if not available
+          title: track.title,
+          duration: track.duration,
           trackNumber: i + 1,
-          description: track.Description,
-          audioUrl: track.Audio_URL,
-          videoUrl: track.Video_URL,
-          imageUrl: track.Image_front,
-          sku: track.SKU
+          description: track.description,
+          audioUrl: `https://audio.hawkeyerapper.com/${albumData.title.toLowerCase().replace(/ /g, '_')}/${track.title.toLowerCase().replace(/ /g, '_')}.mp3`,
+          videoUrl: "",
+          imageUrl: albumData.coverImage,
+          sku: `HE-${albumData.title.substring(0, 2).toUpperCase()}-${i+1}`
         };
         
         await storage.createTrack(trackInsert);
+        console.log(`Added track: ${track.title} to ${albumData.title}`);
       }
     } catch (error) {
       console.error(`Error adding album ${albumData.title}:`, error);
@@ -192,45 +181,49 @@ function getSuffix(num: number): string {
  * Processes singles from CSV
  */
 export async function processSingles(csvItems: CSVMerchItem[]): Promise<void> {
-  const singles = csvItems.filter(item => item.Type === 'Single');
+  // Define our singles collection
+  const singles = [
+    { title: "Hawk's Nest Anthem", duration: "3:33", description: "The official anthem of the Hawk's Nest online community" },
+    { title: "Shadow Banned", duration: "3:18", description: "Commentary on digital censorship and suppression" },
+    { title: "Digital Warrior", duration: "4:02", description: "Dedication to online truth seekers and researchers" }
+  ];
   
-  // Create a singles album if we have singles
-  if (singles.length > 0) {
-    try {
-      const singlesAlbum: InsertAlbum = {
-        title: "Singles Collection",
-        dedicatedTo: "The Fans",
-        description: "Collection of Hawk Eye's standalone singles.",
-        coverImage: singles[0].Image_front,
-        backImage: "",
-        sideImage: "",
-        discImage: "",
-        releaseYear: "2023-2025",
-        trackCount: singles.length
+  try {
+    const singlesAlbum: InsertAlbum = {
+      title: "Singles Collection",
+      dedicatedTo: "The Fans",
+      description: "Collection of Hawk Eye's standalone singles.",
+      coverImage: "https://via.placeholder.com/600x600.png?text=Singles+Collection",
+      backImage: "",
+      sideImage: "",
+      discImage: "",
+      releaseYear: "2023-2025",
+      trackCount: singles.length
+    };
+    
+    const album = await storage.createAlbum(singlesAlbum);
+    console.log(`Added album: Singles Collection`);
+    
+    // Add each single as a track
+    for (let i = 0; i < singles.length; i++) {
+      const single = singles[i];
+      const trackInsert: InsertTrack = {
+        albumId: album.id,
+        title: single.title,
+        duration: single.duration,
+        trackNumber: i + 1,
+        description: single.description,
+        audioUrl: `https://audio.hawkeyerapper.com/singles/${single.title.toLowerCase().replace(/ /g, '_')}.mp3`,
+        videoUrl: "",
+        imageUrl: "https://via.placeholder.com/600x600.png?text=Hawk+Eye+Single",
+        sku: `HE-SG-${i+1}`
       };
       
-      const album = await storage.createAlbum(singlesAlbum);
-      
-      // Add each single as a track
-      for (let i = 0; i < singles.length; i++) {
-        const single = singles[i];
-        const trackInsert: InsertTrack = {
-          albumId: album.id,
-          title: single.Name,
-          duration: "3:30", // Default duration
-          trackNumber: i + 1,
-          description: single.Description,
-          audioUrl: single.Audio_URL,
-          videoUrl: single.Video_URL,
-          imageUrl: single.Image_front,
-          sku: single.SKU
-        };
-        
-        await storage.createTrack(trackInsert);
-      }
-    } catch (error) {
-      console.error('Error adding singles collection:', error);
+      await storage.createTrack(trackInsert);
+      console.log(`Added single: ${single.title}`);
     }
+  } catch (error) {
+    console.error('Error adding singles collection:', error);
   }
 }
 
