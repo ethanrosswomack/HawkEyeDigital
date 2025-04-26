@@ -1,4 +1,4 @@
-import { pgTable, text, serial, integer } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, integer, real } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -9,6 +9,9 @@ export const albums = pgTable("albums", {
   dedicatedTo: text("dedicated_to").notNull(),
   description: text("description").notNull(),
   coverImage: text("cover_image"),
+  backImage: text("back_image"),
+  sideImage: text("side_image"),
+  discImage: text("disc_image"),
   releaseYear: text("release_year").notNull(),
   trackCount: integer("track_count").notNull(),
 });
@@ -22,6 +25,10 @@ export const tracks = pgTable("tracks", {
   trackNumber: integer("track_number").notNull(),
   lyrics: text("lyrics"),
   description: text("description"),
+  audioUrl: text("audio_url"),  // URL to the audio file
+  videoUrl: text("video_url"),  // URL to the video if available
+  imageUrl: text("image_url"),  // URL to track-specific image
+  sku: text("sku"),             // SKU for the track
 });
 
 // Blog table - to store blog posts
@@ -40,9 +47,16 @@ export const merchItems = pgTable("merch_items", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
   description: text("description").notNull(),
-  price: text("price").notNull(),
-  imageUrl: text("image_url"),
+  price: real("price").notNull(),
+  sku: text("sku").notNull(),
+  type: text("type").notNull(),
   category: text("category").notNull(),
+  inStock: integer("in_stock").notNull().default(0),
+  imageAlt: text("image_alt"),     // Alternative view image
+  imageBack: text("image_back"),   // Back view image
+  imageFront: text("image_front"), // Front view image
+  imageSide: text("image_side"),   // Side view image
+  kunakiUrl: text("kunaki_url"),   // Kunaki store URL
 });
 
 // Newsletter subscriptions

@@ -1,12 +1,87 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
+import { WebSocketServer } from 'ws';
 import { storage } from "./storage";
 import { z } from "zod";
 import { insertSubscriberSchema } from "@shared/schema";
+import { importCSVData } from "./csvParser";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   const httpServer = createServer(app);
+  
+  // Setup WebSocket server for live streaming
+  const wss = new WebSocketServer({ 
+    server: httpServer, 
+    path: '/ws'
+  });
+  
+  // WebSocket event handlers
+  wss.on('connection', (ws) => {
+    console.log('Client connected to WebSocket');
+    
+    // Send a welcome message
+    ws.send(JSON.stringify({
+      type: 'info',
+      message: 'Welcome to Hawk Eye Live Stream'
+    }));
+    
+    // Handle incoming messages
+    ws.on('message', (message) => {
+      try {
+        const data = JSON.parse(message.toString());
+        console.log('Received:', data);
+        
+        // Echo the message back to all clients
+        wss.clients.forEach((client) => {
+          if (client.readyState === ws.OPEN) {
+            client.send(JSON.stringify({
+              type: 'message',
+              sender: 'user',
+              content: data.content,
+              timestamp: new Date().toISOString()
+            }));
+          }
+        });
+      } catch (error) {
+        console.error('Error processing WebSocket message:', error);
+      }
+    });
+    
+    // Handle disconnection
+    ws.on('close', () => {
+      console.log('Client disconnected from WebSocket');
+    });
+  });
 
+  // Import CSV data endpoint
+  app.post("/api/import-csv", async (req, res) => {
+    try {
+      const { csvUrl } = req.body;
+      
+      if (!csvUrl) {
+        return res.status(400).json({ message: "CSV URL is required" });
+      }
+      
+      // Start the import process
+      importCSVData(csvUrl)
+        .then(() => {
+          console.log('CSV import completed successfully');
+        })
+        .catch((error) => {
+          console.error('CSV import failed:', error);
+        });
+      
+      // Return a response immediately as import may take time
+      res.status(202).json({ 
+        message: "CSV import started", 
+        status: "processing" 
+      });
+    } catch (error) {
+      console.error('Error starting CSV import:', error);
+      res.status(500).json({ message: "Failed to start CSV import" });
+    }
+  });
+  
   // API endpoints for albums
   app.get("/api/albums", async (req, res) => {
     const albums = await storage.getAlbums();
