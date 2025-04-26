@@ -173,25 +173,40 @@ const Lyrics: React.FC = () => {
                 </div>
 
                 <div className="mt-6 text-right">
-                  {track.title === "Syntax" && track.albumId === 1 ? (
-                    <a 
-                      href="https://s3.omniversalmedia.app/The%20Mixtape%20Sessions/Part%201%20-%20Full%20Disclosure/Mardown/13_syntax%20copy.md" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="text-orange hover:text-orange/80 font-semibold flex items-center justify-end"
-                    >
-                      Full Breakdown <i className="fas fa-arrow-right ml-1"></i>
-                    </a>  
-                  ) : (
-                    <a 
-                      href={`https://s3.omniversalmedia.app/The%20Mixtape%20Sessions/${track.albumId === 1 ? 'Part%201%20-%20Full%20Disclosure' : track.albumId === 2 ? 'Part%202%20-%20Behold%20A%20Pale%20Horse' : 'Part%203%20-%20Milabs'}`}
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="text-orange hover:text-orange/80 font-semibold flex items-center justify-end"
-                    >
-                      View Album Lyrics <i className="fas fa-arrow-right ml-1"></i>
-                    </a>
-                  )}
+                  {(() => {
+                    let url = "";
+                    let text = "";
+                    
+                    if (track.albumId === 1) {
+                      if (track.title === "The Story of Our Former Glory") {
+                        url = "https://s3.omniversalmedia.app/The%20Mixtape%20Sessions/Full_Disclosure_LYRICS-HERE_BACKUP_Markdown/15_the_story_of_our_former_glory.md";
+                        text = "Full Breakdown";
+                      } else if (track.title === "Syntax") {
+                        url = "https://s3.omniversalmedia.app/The%20Mixtape%20Sessions/Part%201%20-%20Full%20Disclosure/Mardown/13_syntax%20copy.md";
+                        text = "Full Breakdown";
+                      } else {
+                        url = "https://s3.omniversalmedia.app/The%20Mixtape%20Sessions/Full_Disclosure_LYRICS-HERE_BACKUP_Markdown/";
+                        text = "Album Lyrics";
+                      }
+                    } else if (track.albumId === 2) {
+                      url = "https://s3.omniversalmedia.app/The%20Mixtape%20Sessions/Part%202%20-%20Behold%20A%20Pale%20Horse";
+                      text = "Album Lyrics";
+                    } else {
+                      url = "https://s3.omniversalmedia.app/The%20Mixtape%20Sessions/Part%203%20-%20Milabs";
+                      text = "Album Lyrics";
+                    }
+                    
+                    return (
+                      <a 
+                        href={url}
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-orange hover:text-orange/80 font-semibold flex items-center justify-end"
+                      >
+                        {text} <i className="fas fa-arrow-right ml-1"></i>
+                      </a>
+                    );
+                  })()}
                 </div>
               </div>
             ))

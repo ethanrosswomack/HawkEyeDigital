@@ -239,6 +239,15 @@ export class MemStorage implements IStorage {
       lyrics: "Through the noise, voices emerge, carrying messages from beyond the surface reality we're told to accept...",
       description: "As the search deepens, you start picking up signals, clues, and whispers – but also interference."
     });
+    
+    this.createTrack({
+      albumId: 1, // Full Disclosure album ID
+      title: "The Story of Our Former Glory",
+      duration: "5:37",
+      trackNumber: 15,
+      lyrics: "Straight flames when I float make the devil loose his hold on these people\nAll this evil better recall when I show cause I came to cause static\nPut Satan in a casket send his demons back to hell and wish him well\nI'm dogmatic once they rest in peace and all these wargames cease\n\nWe can finally be released from this matrix that keeps us flying to the truth\nYou can see it in the youth we're divine at our roots\nWe got all the attributes but that's another story\nFirst we gotta win this war see I've been fighting since before...",
+      description: "A powerful track exploring spiritual warfare and humanity's forgotten divine origins. The lyrics suggest we are reincarnated spiritual warriors who came to Earth to protect it from negative forces."
+    });
 
     // Create blog posts
     this.createBlogPost({
@@ -272,7 +281,7 @@ export class MemStorage implements IStorage {
     this.createMerchItem({
       name: "Graffiti Eye Long Sleeve",
       description: "Black long-sleeve with graffiti-style eye design",
-      price: "$35.00",
+      price: 35.00,
       imageUrl: "/merch/graffiti-eye-long-sleeve.jpg",
       category: "Apparel"
     });
@@ -280,7 +289,7 @@ export class MemStorage implements IStorage {
     this.createMerchItem({
       name: "Visionary Lyrics Hoodie",
       description: "Black hoodie with futuristic \"VISIONARY LYRICS\" text",
-      price: "$55.00",
+      price: 55.00,
       imageUrl: "/merch/visionary-lyrics-hoodie.jpg",
       category: "Apparel"
     });
@@ -288,7 +297,7 @@ export class MemStorage implements IStorage {
     this.createMerchItem({
       name: "Phoenix Rebirth T-Shirt",
       description: "Black tee with stylized phoenix in a tech-inspired design",
-      price: "$30.00",
+      price: 30.00,
       imageUrl: "/merch/phoenix-rebirth-shirt.jpg",
       category: "Apparel"
     });
@@ -296,7 +305,7 @@ export class MemStorage implements IStorage {
     this.createMerchItem({
       name: "Urban Camo Snapback",
       description: "Cap with urban digital camo pattern and hawk eye logo",
-      price: "$25.00",
+      price: 25.00,
       imageUrl: "/merch/urban-camo-snapback.jpg",
       category: "Accessories"
     });
