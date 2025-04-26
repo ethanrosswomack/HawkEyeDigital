@@ -136,7 +136,10 @@ export async function processAlbumAndTracks(csvItems: CSVMerchItem[]): Promise<v
   }
   
   // Now save albums and tracks to storage
-  for (const [, albumData] of albums) {
+  // Convert Map to array for easier async handling
+  const albumEntries = Array.from(albums.entries());
+  
+  for (const [albumTitle, albumData] of albumEntries) {
     try {
       const albumInsert: InsertAlbum = {
         title: albumData.title,

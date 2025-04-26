@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { useRoute, Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { Album, Track } from "@shared/schema";
 import { Button } from "@/components/ui/button";
+import AudioPlayer from "@/components/AudioPlayer";
 
 const AlbumDetails: React.FC = () => {
   const [, params] = useRoute("/album/:id");
