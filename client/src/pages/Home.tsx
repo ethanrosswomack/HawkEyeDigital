@@ -193,15 +193,19 @@ const Home: React.FC = () => {
                 </div>
 
                 <div className="flex flex-wrap gap-4">
-                  <Button className="inline-flex items-center px-6 py-3 bg-orange text-dark font-semibold rounded-md hover:bg-orange/90 transition-colors orbitron">
-                    <i className="fas fa-play mr-2"></i> LISTEN NOW
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="inline-flex items-center px-6 py-3 bg-transparent border-2 border-light text-light font-semibold rounded-md hover:bg-light/10 transition-colors orbitron"
-                  >
-                    <i className="fas fa-book mr-2"></i> LYRICS
-                  </Button>
+                  <Link href={`/albums/${albums[2]?.id || 3}`}>
+                    <Button className="inline-flex items-center px-6 py-3 bg-orange text-dark font-semibold rounded-md hover:bg-orange/90 transition-colors orbitron">
+                      <i className="fas fa-play mr-2"></i> LISTEN NOW
+                    </Button>
+                  </Link>
+                  <Link href="/lyrics">
+                    <Button
+                      variant="outline"
+                      className="inline-flex items-center px-6 py-3 bg-transparent border-2 border-light text-light font-semibold rounded-md hover:bg-light/10 transition-colors orbitron"
+                    >
+                      <i className="fas fa-book mr-2"></i> LYRICS
+                    </Button>
+                  </Link>
                 </div>
               </div>
 
@@ -300,9 +304,14 @@ const Home: React.FC = () => {
                     Access the complete collection of Hawk Eye's lyrics, organized by
                     album and track number, with extensive annotations.
                   </p>
-                  <Button className="inline-block px-6 py-3 bg-orange text-dark font-semibold rounded-md hover:bg-orange/90 transition-colors orbitron">
+                  <a 
+                    href="https://s3.omniversalmedia.app/The%20Mixtape%20Sessions/Mixtape_Sessions_Archive_ReportLab.pdf" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="inline-block px-6 py-3 bg-orange text-dark font-semibold rounded-md hover:bg-orange/90 transition-colors orbitron"
+                  >
                     DOWNLOAD PDF <i className="fas fa-download ml-2"></i>
-                  </Button>
+                  </a>
                 </div>
                 <div className="md:w-2/3 grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="bg-navy/40 p-4 rounded-md">
