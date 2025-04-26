@@ -51,11 +51,9 @@ const Navbar: React.FC = () => {
                 className="h-full w-full object-contain"
               />
             </div>
-            <img 
-              src="https://omniversal.cloud/symbols/hawk_emblem/Hawk_Title.png" 
-              alt="Hawk Eye" 
-              className="h-8 object-contain"
-            />
+            <span className="text-xl font-bold text-light orbitron">
+              HAWK<span className="text-orange">EYE</span>
+            </span>
           </Link>
 
           {/* Desktop Navigation */}

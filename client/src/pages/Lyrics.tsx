@@ -173,9 +173,25 @@ const Lyrics: React.FC = () => {
                 </div>
 
                 <div className="mt-6 text-right">
-                  <Button variant="link" className="text-orange hover:text-orange/80">
-                    Full Breakdown <i className="fas fa-arrow-right ml-1"></i>
-                  </Button>
+                  {track.title === "Syntax" && track.albumId === 1 ? (
+                    <a 
+                      href="https://s3.omniversalmedia.app/The%20Mixtape%20Sessions/Part%201%20-%20Full%20Disclosure/Mardown/13_syntax%20copy.md" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-orange hover:text-orange/80 font-semibold flex items-center justify-end"
+                    >
+                      Full Breakdown <i className="fas fa-arrow-right ml-1"></i>
+                    </a>  
+                  ) : (
+                    <a 
+                      href={`https://s3.omniversalmedia.app/The%20Mixtape%20Sessions/${track.albumId === 1 ? 'Part%201%20-%20Full%20Disclosure' : track.albumId === 2 ? 'Part%202%20-%20Behold%20A%20Pale%20Horse' : 'Part%203%20-%20Milabs'}`}
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-orange hover:text-orange/80 font-semibold flex items-center justify-end"
+                    >
+                      View Album Lyrics <i className="fas fa-arrow-right ml-1"></i>
+                    </a>
+                  )}
                 </div>
               </div>
             ))
@@ -192,9 +208,14 @@ const Lyrics: React.FC = () => {
                 Access the complete collection of Hawk Eye's lyrics, organized by
                 album and track number, with extensive annotations.
               </p>
-              <Button className="inline-block px-6 py-3 bg-orange text-dark font-semibold rounded-md hover:bg-orange/90 transition-colors orbitron">
+              <a 
+                href="https://s3.omniversalmedia.app/The%20Mixtape%20Sessions/Mixtape_Sessions_Archive_ReportLab.pdf" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-block px-6 py-3 bg-orange text-dark font-semibold rounded-md hover:bg-orange/90 transition-colors orbitron"
+              >
                 DOWNLOAD PDF <i className="fas fa-download ml-2"></i>
-              </Button>
+              </a>
             </div>
             <div className="md:w-2/3 grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="bg-navy/40 p-4 rounded-md">
