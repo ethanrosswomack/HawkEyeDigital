@@ -10,9 +10,6 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 
-// Import the hawk eye logo
-import hawkEyeLogo from "@assets/View recent photos.jpeg.png";
-
 const Home: React.FC = () => {
   const { toast } = useToast();
   const [email, setEmail] = React.useState("");
@@ -141,9 +138,9 @@ const Home: React.FC = () => {
               <div className="relative">
                 <div className="absolute -inset-4 bg-gradient-to-r from-purple via-darkred to-orange rounded-full blur-xl opacity-70 animate-pulse"></div>
                 <img
-                  src={hawkEyeLogo}
+                  src="https://omniversal.cloud/symbols/hawk_emblem/hawk_emblem_red_transparent.png"
                   alt="Hawk Eye The Rapper"
-                  className="relative rounded-lg w-full max-w-md object-cover shadow-2xl"
+                  className="relative rounded-lg w-full max-w-md object-contain shadow-2xl"
                 />
               </div>
             </div>
@@ -211,16 +208,12 @@ const Home: React.FC = () => {
               <div className="md:w-1/2 order-1 md:order-2 flex justify-center">
                 <div className="relative">
                   <div className="absolute -inset-4 bg-gradient-radial from-purple to-transparent rounded-full blur-xl opacity-70"></div>
-                  <div className="rounded-lg shadow-2xl relative z-10 max-w-md bg-navy/50 aspect-square flex items-center justify-center">
-                    <svg
-                      className="w-full h-full p-8 text-orange/30"
-                      viewBox="0 0 100 100"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <circle cx="50" cy="50" r="48" stroke="currentColor" strokeWidth="2" fill="none" />
-                      <circle cx="50" cy="50" r="30" fill="currentColor" opacity="0.3" />
-                      <circle cx="50" cy="50" r="5" fill="currentColor" />
-                    </svg>
+                  <div className="rounded-lg shadow-2xl relative z-10 max-w-md bg-navy/50 aspect-square flex items-center justify-center p-8">
+                    <img 
+                      src="https://omniversal.cloud/symbols/hawk_emblem/hawk_emblem_red_solid.png"
+                      alt="Hawk Eye Album Emblem"
+                      className="w-full h-full object-contain"
+                    />
                   </div>
                 </div>
               </div>
@@ -377,22 +370,12 @@ const Home: React.FC = () => {
             <div>
               <div className="relative">
                 <div className="absolute -inset-4 bg-gradient-to-tr from-purple to-darkred rounded-xl blur-xl opacity-50"></div>
-                <div className="rounded-lg shadow-2xl relative z-10 bg-navy/30 aspect-video flex items-center justify-center">
-                  <svg
-                    className="w-full h-full p-8 text-orange/30"
-                    viewBox="0 0 100 100"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M20 70L30 30L50 50L70 30L80 70"
-                      stroke="currentColor"
-                      strokeWidth="3"
-                      fill="none"
-                    />
-                    <circle cx="30" cy="30" r="5" fill="currentColor" />
-                    <circle cx="50" cy="50" r="5" fill="currentColor" />
-                    <circle cx="70" cy="30" r="5" fill="currentColor" />
-                  </svg>
+                <div className="rounded-lg shadow-2xl relative z-10 bg-navy/30 aspect-video flex items-center justify-center p-8">
+                  <img
+                    src="https://omniversal.cloud/symbols/hawk_emblem/hawk_emblem_black_white.png"
+                    alt="Hawk Eye Vision Symbol"
+                    className="w-full h-full object-contain"
+                  />
                 </div>
               </div>
             </div>
@@ -523,7 +506,7 @@ const Home: React.FC = () => {
                       <div className="absolute -inset-1 bg-gradient-to-tr from-orange to-purple rounded-full blur-md opacity-70"></div>
                       <div className="relative bg-dark rounded-full p-6">
                         <img
-                          src={hawkEyeLogo}
+                          src="https://omniversal.cloud/symbols/hawk_emblem/hawk_emblem_neongreen_black.png"
                           alt="Hawk Eye Logo"
                           className="w-40 h-40 object-contain"
                         />

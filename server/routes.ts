@@ -4,7 +4,7 @@ import { WebSocketServer } from 'ws';
 import { storage } from "./storage";
 import { z } from "zod";
 import { insertSubscriberSchema } from "@shared/schema";
-import { importCSVData } from "./csvParser";
+import { importCSVData, processAlbumAndTracks, processSingles } from "./csvParser";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   const httpServer = createServer(app);

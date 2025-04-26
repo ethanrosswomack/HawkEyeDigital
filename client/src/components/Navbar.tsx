@@ -45,22 +45,17 @@ const Navbar: React.FC = () => {
         <div className="flex items-center justify-between">
           <Link href="/" className="flex items-center space-x-2">
             <div className="h-10 w-10 relative">
-              <svg
-                className="rounded-full h-full w-full"
-                viewBox="0 0 100 100"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <circle cx="50" cy="50" r="50" fill="#1E1E1E" />
-                <path
-                  d="M50 20C33.431 20 20 33.431 20 50s13.431 30 30 30 30-13.431 30-30S66.569 20 50 20zm0 5c13.807 0 25 11.193 25 25S63.807 75 50 75 25 63.807 25 50s11.193-25 25-25z"
-                  fill="#FF8C00"
-                />
-                <circle cx="50" cy="50" r="10" fill="#4B0082" />
-              </svg>
+              <img 
+                src="https://omniversal.cloud/symbols/hawk_emblem/hawk_emblem_red_transparent.png" 
+                alt="Hawk Eye Logo" 
+                className="h-full w-full object-contain"
+              />
             </div>
-            <span className="text-xl font-bold text-light orbitron">
-              HAWK<span className="text-orange">EYE</span>
-            </span>
+            <img 
+              src="https://omniversal.cloud/symbols/hawk_emblem/Hawk_Title.png" 
+              alt="Hawk Eye" 
+              className="h-8 object-contain"
+            />
           </Link>
 
           {/* Desktop Navigation */}
