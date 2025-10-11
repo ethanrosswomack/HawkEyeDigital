@@ -5,6 +5,8 @@ import {
   merchItems, type MerchItem, type InsertMerchItem,
   subscribers, type Subscriber, type InsertSubscriber,
 } from "@shared/schema";
+import { db } from "./db";
+import { eq } from "drizzle-orm";
 
 export interface IStorage {
   // Album operations
@@ -312,4 +314,74 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = new MemStorage();
+// Database storage implementation using PostgreSQL
+export class DatabaseStorage implements IStorage {
+  // Album operations
+  async getAlbums(): Promise<Album[]> {
+    return await db.select().from(albums);
+  }
+
+  async getAlbumById(id: number): Promise<Album | undefined> {
+    const result = await db.select().from(albums).where(eq(albums.id, id));
+    return result[0];
+  }
+
+  async createAlbum(insertAlbum: InsertAlbum): Promise<Album> {
+    const result = await db.insert(albums).values(insertAlbum).returning();
+    return result[0];
+  }
+
+  // Track operations
+  async getTracksByAlbumId(albumId: number): Promise<Track[]> {
+    return await db.select().from(tracks).where(eq(tracks.albumId, albumId));
+  }
+
+  async getTrackById(id: number): Promise<Track | undefined> {
+    const result = await db.select().from(tracks).where(eq(tracks.id, id));
+    return result[0];
+  }
+
+  async createTrack(insertTrack: InsertTrack): Promise<Track> {
+    const result = await db.insert(tracks).values(insertTrack).returning();
+    return result[0];
+  }
+
+  // Blog operations
+  async getBlogPosts(): Promise<BlogPost[]> {
+    return await db.select().from(blogPosts);
+  }
+
+  async getBlogPostById(id: number): Promise<BlogPost | undefined> {
+    const result = await db.select().from(blogPosts).where(eq(blogPosts.id, id));
+    return result[0];
+  }
+
+  async createBlogPost(insertBlogPost: InsertBlogPost): Promise<BlogPost> {
+    const result = await db.insert(blogPosts).values(insertBlogPost).returning();
+    return result[0];
+  }
+
+  // Merchandise operations
+  async getMerchItems(): Promise<MerchItem[]> {
+    return await db.select().from(merchItems);
+  }
+
+  async getMerchItemById(id: number): Promise<MerchItem | undefined> {
+    const result = await db.select().from(merchItems).where(eq(merchItems.id, id));
+    return result[0];
+  }
+
+  async createMerchItem(insertMerchItem: InsertMerchItem): Promise<MerchItem> {
+    const result = await db.insert(merchItems).values(insertMerchItem).returning();
+    return result[0];
+  }
+
+  // Newsletter operations
+  async createSubscriber(insertSubscriber: InsertSubscriber): Promise<Subscriber> {
+    const result = await db.insert(subscribers).values(insertSubscriber).returning();
+    return result[0];
+  }
+}
+
+// Use DatabaseStorage for production, MemStorage for fallback
+export const storage = new DatabaseStorage();
