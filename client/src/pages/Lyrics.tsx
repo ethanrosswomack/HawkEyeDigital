@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueries } from "@tanstack/react-query";
 import { Album, Track } from "@shared/schema";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -13,21 +13,20 @@ const Lyrics: React.FC = () => {
     queryKey: ["/api/albums"],
   });
 
-  // Fetch all tracks from all albums
+  // Fetch all tracks from all albums using useQueries to avoid hook violations
   const albumIds = albums?.map(album => album.id) || [];
-  const trackQueries = albumIds.map(id => ({
-    queryKey: [`/api/albums/${id}/tracks`],
-    enabled: albumIds.length > 0,
-  }));
-
-  const tracksResults = trackQueries.map(query => 
-    useQuery<Track[]>(query)
-  );
+  
+  const tracksResults = useQueries<Track[][]>({
+    queries: albumIds.map(id => ({
+      queryKey: [`/api/albums/${id}/tracks`],
+      enabled: albumIds.length > 0,
+    })),
+  });
 
   const isLoadingTracks = tracksResults.some(result => result.isLoading);
   
   // Combine all tracks into a single array
-  const allTracks = tracksResults.flatMap(result => result.data || []);
+  const allTracks: Track[] = tracksResults.flatMap(result => (result.data as Track[]) || []);
 
   const filteredTracks = allTracks.filter(track => {
     const matchesSearch = 

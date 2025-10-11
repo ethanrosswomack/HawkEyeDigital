@@ -1,6 +1,6 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
-import { WebSocketServer } from 'ws';
+import { WebSocketServer, WebSocket } from 'ws';
 import { storage } from "./storage";
 import { z } from "zod";
 import { insertSubscriberSchema } from "@shared/schema";
@@ -9,10 +9,19 @@ import { importCSVData, processAlbumAndTracks, processSingles } from "./csvParse
 export async function registerRoutes(app: Express): Promise<Server> {
   const httpServer = createServer(app);
   
-  // Setup WebSocket server for live streaming
-  const wss = new WebSocketServer({ 
-    server: httpServer, 
-    path: '/ws'
+  // Setup WebSocket server for live streaming with noServer to avoid conflicts with Vite HMR
+  const wss = new WebSocketServer({ noServer: true });
+  
+  // Handle upgrade requests manually only for /ws path
+  httpServer.on('upgrade', (request, socket, head) => {
+    const pathname = new URL(request.url || '', `http://${request.headers.host}`).pathname;
+    
+    if (pathname === '/ws') {
+      wss.handleUpgrade(request, socket, head, (ws) => {
+        wss.emit('connection', ws, request);
+      });
+    }
+    // Let other upgrade requests (like Vite HMR) pass through
   });
   
   // Track connected clients and viewer count
