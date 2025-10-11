@@ -38,7 +38,9 @@ localPort = 44297
 externalPort = 3000
 
 [deployment]
-deploymentTarget = "cloudrun"
+deploymentTarget = "autoscale"
+run = ["npm", "start"]
+build = ["npm", "run", "build"]
 
 [nix]
 channel = "stable-25_05"

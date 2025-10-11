@@ -148,11 +148,28 @@ The application includes WebSocket support for live streaming functionality:
 - Server uses `noServer: true` for custom WebSocket to allow Vite HMR to work properly
 
 ## Deployment
-For production deployment:
-1. Set `DATABASE_URL` environment variable (if using database)
-2. Run `npm install`
-3. Run `npm run build` (builds both client and server)
-4. Run `npm start` to start the production server
+
+Your site is **ready to deploy**! The deployment configuration is set up for Autoscale deployment (ideal for web apps).
+
+### How to Deploy on Replit
+
+1. **Click the "Publish" button** in your Replit workspace
+2. **Choose "Autoscale"** deployment type (recommended for your site)
+   - Automatically scales with traffic
+   - You only pay when users are visiting
+   - Perfect for web applications with a database
+3. **Configure settings** (if prompted):
+   - Machine power: Start with the default
+   - Environment variables: Your `DATABASE_URL` is already set
+4. **Click "Publish"** to go live!
+
+Your site will be available at a public Replit URL that you can share or connect to a custom domain.
+
+### Deployment Configuration
+- **Build command**: `npm run build` (builds frontend + backend)
+- **Run command**: `npm start` (production server)
+- **Deployment type**: Autoscale (auto-scales based on traffic)
+- **Database**: PostgreSQL is configured and will work in production
 
 ## Browser Compatibility
 - Modern browsers with ES6+ support
