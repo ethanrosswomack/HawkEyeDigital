@@ -1,0 +1,23 @@
+/* Minimal Arsenal player styles */
+:root{--bg:#0b0e12;--panel:#111622;--ink:#eaf2ff;--muted:#9fb3c8;--accent:#21d4fd;--accent2:#b721ff}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif}
+.wrap{max-width:1200px;margin:0 auto;padding:clamp(12px,2vw,24px)}
+.header{border-bottom:1px solid #1e2633;background:#0b0f18}
+h1{letter-spacing:.2rem}
+.muted{color:var(--muted)}
+.grid{display:grid;grid-template-columns:320px 1fr;gap:20px;margin-top:12px}
+.sidebar{background:var(--panel);border:1px solid #1e2633;border-radius:16px;padding:12px;overflow:auto;max-height:calc(100vh - 160px)}
+#search{width:100%;padding:10px 12px;border-radius:10px;border:1px solid #263042;background:#0d1420;color:var(--ink);margin-bottom:10px}
+.list{list-style:none;padding:0;margin:0}
+.list li{padding:10px;border-bottom:1px solid #20283a;cursor:pointer}
+.list li.active{background:#0f1a2b}
+.player{background:var(--panel);border:1px solid #1e2633;border-radius:16px;padding:16px}
+.now{display:grid;grid-template-columns:140px 1fr;gap:16px;align-items:center}
+.now img{width:100%;border-radius:12px;border:1px solid #20283a}
+.controls button,.btn{margin-right:6px;padding:8px 10px;border-radius:10px;border:1px solid #2a3750;background:#0e1624;color:var(--ink);cursor:pointer}
+.btn.ghost{background:transparent}
+#seek{width:100%}
+.lyrics{margin-top:12px;line-height:1.6;background:#0d1320;border:1px solid #1f2a3e;border-radius:12px;padding:12px;min-height:240px;overflow:auto;white-space:pre-wrap}
+.footer{border-top:1px solid #1e2633;background:#0a0d12;margin-top:16px}
+@media (max-width:900px){.grid{grid-template-columns:1fr}.sidebar{max-height:none}}

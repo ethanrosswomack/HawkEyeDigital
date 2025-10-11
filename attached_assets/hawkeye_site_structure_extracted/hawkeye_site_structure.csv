@@ -1,0 +1,9 @@
+post_title,post_slug,post_content,post_name,post_excerpt,post_status,post_parent,menu_order,post_type
+Home,home,Welcome to Hawk Eye's Official Site!,home,Official homepage of Hawk Eye.,publish,,1,page
+About,about,Biography and artistic vision of Hawk Eye.,about,Learn more about Hawk Eye.,publish,,2,page
+Music,music,Discover Hawk Eye's discography and latest music.,music,Explore Hawk Eye's music.,publish,,3,page
+Shadow Banned,shadow-banned,"A deep dive into the 'Shadow Banned' project, with lyric videos and more.",shadow-banned,Lyric videos and insights from the album.,publish,Music,1,page
+Governing Conspiracy,governing-conspiracy,Explore the narrative and inspiration behind 'The Governing Conspiracy'.,governing-conspiracy,Uncover hidden truths through music.,publish,Music,2,page
+Store,store,"Shop exclusive Hawk Eye merchandise, apparel, and albums.",store,Buy exclusive Hawk Eye merch.,publish,,4,page
+Blog,blog,"Read the latest news, thoughts, and updates from Hawk Eye.",blog,Latest updates from Hawk Eye.,publish,,5,page
+Contact,contact,"Contact Hawk Eye directly for bookings, press inquiries, or collaborations.",contact,Collaborate or connect with Hawk Eye.,publish,,6,page

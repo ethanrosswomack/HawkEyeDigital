@@ -1,0 +1,11 @@
+{
+  "tracks": [
+    {
+      "title": "Sample Track",
+      "artist": "Hawk Eye the Rapper",
+      "mp3Url": "https://example-r2.yourdomain.com/arsenal/sample.mp3",
+      "lyricsUrl": "/tracks/sample.lrc",
+      "coverUrl": "/assets/img/cover.png"
+    }
+  ]
+}
