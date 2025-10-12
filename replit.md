@@ -171,6 +171,27 @@ Your site will be available at a public Replit URL that you can share or connect
 - **Deployment type**: Autoscale (auto-scales based on traffic)
 - **Database**: PostgreSQL is configured and will work in production
 
+### ⚠️ Important: Initialize Production Database
+
+After deploying, your production database will be empty. You need to populate it with data:
+
+**To populate your production database:**
+1. After deployment, visit your deployed site URL
+2. Add `/api/init-database` to the URL
+3. Use a tool like Postman, or run this command in your browser console:
+   ```javascript
+   fetch('/api/init-database', { method: 'POST' })
+     .then(r => r.json())
+     .then(console.log)
+   ```
+4. This will import all 7 albums, 99 tracks, 45 merchandise items, and blog posts
+5. Your site will then be fully functional!
+
+**Or use curl from terminal:**
+```bash
+curl -X POST https://your-deployed-url.replit.app/api/init-database
+```
+
 ## Browser Compatibility
 - Modern browsers with ES6+ support
 - WebSocket support required for live streaming features

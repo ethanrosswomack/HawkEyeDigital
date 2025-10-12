@@ -167,7 +167,7 @@ function getAlbumForTrack(title: string, trackId: string): number {
   return 1;
 }
 
-async function importAlbums() {
+export async function importAlbums() {
   console.log('Importing albums...');
   
   for (const config of albumConfigs) {
@@ -177,7 +177,7 @@ async function importAlbums() {
   console.log(`✓ Imported ${albumConfigs.length} albums`);
 }
 
-async function importTracks() {
+export async function importTracks() {
   console.log('Importing tracks from unified catalog...');
   
   const csvPath = join(process.cwd(), 'attached_assets', 'hawk_ars_unified_catalog_1760201967922.csv');
@@ -234,7 +234,7 @@ async function importTracks() {
   console.log(`✓ Imported ${tracksToInsert.length} unique tracks`);
 }
 
-async function importMerch() {
+export async function importMerch() {
   console.log('Importing merchandise...');
   
   const csvPath = join(process.cwd(), 'attached_assets', 'storecsvcontent.txt');
@@ -281,7 +281,7 @@ async function importMerch() {
   console.log(`✓ Imported ${merchToInsert.length} merchandise items`);
 }
 
-async function importBlogPosts() {
+export async function importBlogPosts() {
   console.log('Importing blog posts...');
   
   const samplePosts = [

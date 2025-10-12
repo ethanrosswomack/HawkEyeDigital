@@ -5,6 +5,11 @@ import { storage } from "./storage";
 import { z } from "zod";
 import { insertSubscriberSchema } from "@shared/schema";
 import { importCSVData, processAlbumAndTracks, processSingles } from "./csvParser";
+import { db } from "./db";
+import { albums, tracks, merchItems, blogPosts } from "@shared/schema";
+import { parse } from 'csv-parse/sync';
+import { readFileSync } from 'fs';
+import { join } from 'path';
 
 export async function registerRoutes(app: Express): Promise<Server> {
   const httpServer = createServer(app);
@@ -137,6 +142,37 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error('Error importing sample data:', error);
       res.status(500).json({ message: "Failed to import sample data" });
+    }
+  });
+
+  // Initialize database with full data (for production)
+  app.post("/api/init-database", async (req, res) => {
+    try {
+      console.log('Starting full database initialization...');
+      
+      // Import all data from the import script
+      const { importAlbums, importTracks, importMerch, importBlogPosts } = await import('../scripts/import-data');
+      
+      await importAlbums();
+      await importTracks();
+      await importMerch();
+      await importBlogPosts();
+      
+      console.log('Database initialization complete!');
+      
+      res.status(200).json({ 
+        message: "Database initialized successfully with all data", 
+        status: "completed",
+        data: {
+          albums: 7,
+          tracks: 99,
+          merchandise: 45,
+          blogPosts: 2
+        }
+      });
+    } catch (error) {
+      console.error('Error initializing database:', error);
+      res.status(500).json({ message: "Failed to initialize database", error: String(error) });
     }
   });
   
